@@ -1,0 +1,34 @@
+{
+    "name": "moegirlwiki-update-bot-for google-plus",
+    "description": "A iced-coffee-script-powered update robot for moegirl.org on Google+",
+    "version": "1.0.0alpha",
+    "contributors": [
+        {
+            "name": "zh喵",
+            "email": "",
+            "web": "https://plus.google.com/101873829070855379840"
+        }
+    ],
+    "maintainers": [
+        {
+            "name": "Harry Cheng",
+            "email": "chengyuhui1@gmail.com",
+            "web": "https://plus.google.com/100451406650884759770"
+        }
+    ],
+    "dependencies": {
+        "request": "2.21.x",
+        "jsdom": "0.6.x",
+        "iced-error": "0.0.5",
+        "iced-coffee-script": "1.6.x",
+        "crc": "0.2.x",
+        "mongoskin": "0.5.x",
+        "underscore": "1.4.4"
+    },
+    "licenses": [
+        {
+            "name": "MIT License",
+            "url": ""
+        }
+    ]
+}
