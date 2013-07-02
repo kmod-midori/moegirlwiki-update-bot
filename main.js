@@ -226,8 +226,7 @@
               })));
               __iced_deferrals._fulfill();
             })(function() {
-              db.close();
-              return gcb(null, activity);
+              return gcb(null, activity, item);
             });
           });
         });
@@ -235,8 +234,13 @@
     });
   };
 
-  main(function() {
-    return console.dir(arguments);
-  });
+  setInterval(function() {
+    return main(function(err, a, i) {
+      if (err) {
+        return require('util').log("[ERROR]" + err);
+      }
+      return require('util').log("[POSTED]" + a.stream.update[0].updateId + "(" + i.hash + ")");
+    });
+  }, 3600000);
 
 }).call(this);

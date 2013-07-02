@@ -74,8 +74,14 @@ main = (gcb)->
 
     await col.insert item,esc defer()
 
+    return gcb null,activity,item
 
-    db.close()
-    return gcb null,activity
+setInterval ->
+    main (err,a,i)->
+        return require('util').log("[ERROR]#{err}") if err
+        require('util').log("[POSTED]#{a.stream.update[0].updateId}(#{i.hash})")
 
-main(->console.dir arguments)
+,3600000
+
+
+

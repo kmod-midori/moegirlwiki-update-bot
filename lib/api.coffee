@@ -93,7 +93,7 @@ class GPlusAPI
             method:'POST'
             encoding:'utf-8'
             body
-            proxy:'http://127.0.0.1:8888'
+            #proxy:'http://127.0.0.1:8888'
             strictSSL:false
             headers:{
                 'Accept':'application/json-rpc',
