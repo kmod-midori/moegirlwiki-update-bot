@@ -388,33 +388,18 @@
     now.setTimezone('Asia/Shanghai');
     if (now.getHours() < 6) {
       if (counter === 4) {
-        update(function(err, a, rcid) {
+        return update(function(err, a, rcid) {
           counter = 1;
           if (err) {
             return require('util').log("[U][ERROR]" + err.message);
           }
           return require('util').log("[Q][POSTED]" + a.stream.update[0].updateId + "(" + rcid + ")");
         });
-        question(function(err, a, i) {
-          if (err) {
-            return require('util').log("[Q][ERROR]" + err.message);
-          }
-          return require('util').log("[Q][POSTED]" + a.stream.update[0].updateId + "(" + i.hash + ")");
-        });
       } else {
-        counter++;
+        return counter++;
       }
     } else {
-      if (counter === 4) {
-        question(function(err, a, i) {
-          counter = 1;
-          if (err) {
-            return require('util').log("[Q][ERROR]" + err.message);
-          }
-          return require('util').log("[Q][POSTED]" + a.stream.update[0].updateId + "(" + i.hash + ")");
-        });
-      }
-      update(function(err, a, rcid) {
+      return update(function(err, a, rcid) {
         counter = 1;
         if (err) {
           setTimeout(function() {
@@ -430,12 +415,15 @@
         return require('util').log("[U][POSTED]" + a.stream.update[0].updateId + "(" + rcid + ")");
       });
     }
+  }, 1200000);
+
+  setInterval(function() {
     return question(function(err, a, i) {
       if (err) {
         return require('util').log("[Q][ERROR]" + err.message);
       }
       return require('util').log("[Q][POSTED]" + a.stream.update[0].updateId + "(" + i.hash + ")");
     });
-  }, 1200000);
+  }, 3600000);
 
 }).call(this);

@@ -137,18 +137,9 @@ setInterval ->
                 counter = 1
                 return require('util').log("[U][ERROR]#{err.message}") if err
                 require('util').log("[Q][POSTED]#{a.stream.update[0].updateId}(#{rcid})")
-            question (err,a,i)->
-                return require('util').log("[Q][ERROR]#{err.message}") if err
-                require('util').log("[Q][POSTED]#{a.stream.update[0].updateId}(#{i.hash})")
         else
             counter++
     else
-        if counter is 4
-            question (err,a,i)->
-                counter = 1
-                return require('util').log("[Q][ERROR]#{err.message}") if err
-                require('util').log("[Q][POSTED]#{a.stream.update[0].updateId}(#{i.hash})")
-
         update (err,a,rcid)->
             counter = 1
             if err
@@ -160,14 +151,13 @@ setInterval ->
                 return require('util').log("[U][ERROR]#{err.message}")
             require('util').log("[U][POSTED]#{a.stream.update[0].updateId}(#{rcid})")
 
-
-    question (err,a,i)->
-        return require('util').log("[Q][ERROR]#{err.message}") if err
-        require('util').log("[Q][POSTED]#{a.stream.update[0].updateId}(#{i.hash})")
-
 ,1200000
 
 
-
+setInterval ->
+    question (err,a,i)->
+        return require('util').log("[Q][ERROR]#{err.message}") if err
+        require('util').log("[Q][POSTED]#{a.stream.update[0].updateId}(#{i.hash})")
+,3600000
 
 
