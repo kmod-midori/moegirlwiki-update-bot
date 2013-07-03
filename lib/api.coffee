@@ -104,14 +104,14 @@ class GPlusAPI
         }
 
 
-        await request options,esc defer(res,body)
+        await request options,esc defer(res,_body)
 
         try
-            body = JSON.parse body
+            _body = JSON.parse _body
         catch e
             return callback new Error E.msg.INVALID_JSON
 
-        if body.error?.message is 'Invalid Credentials'
+        if _body.error?.message is 'Invalid Credentials'
             await refresh @refreshToken,esc defer(@access)
             options = {
                 url:endpoint
@@ -125,7 +125,12 @@ class GPlusAPI
                     'Authorization':@access
                 }
             }
-            await request options,esc defer(res,body)
+            await request options,esc defer(res,_body)
+
+            try
+                _body = JSON.parse _body
+            catch e
+                return callback new Error E.msg.INVALID_JSON
 
 
 
@@ -133,11 +138,11 @@ class GPlusAPI
 
 
 
-        if body.error?
-            return callback(new Error body.error.message)
+        if _body.error?
+            return callback(new Error _body.error.message)
 
 
-        return callback null,body.result
+        return callback null,_body.result
 
 
 
