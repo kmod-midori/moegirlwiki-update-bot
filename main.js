@@ -134,7 +134,6 @@
         url: 'http://zh.moegirl.org/api.php?format=json&action=query&list=recentchanges&rcnamespace=0&rctoponly=1',
         method: 'GET',
         timeout: 10000,
-        proxy: 'http://127.0.0.1:8888',
         headers: {
           'User-Agent': 'Node.js'
         }
@@ -333,7 +332,7 @@
             filename: "main.coffee",
             funcname: "question"
           });
-          api.linkPreview(encodeURI(item.url), esc(__iced_deferrals.defer({
+          api.linkPreview(item.url, esc(__iced_deferrals.defer({
             assign_fn: (function() {
               return function() {
                 return embed = arguments[0];

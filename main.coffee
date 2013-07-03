@@ -58,7 +58,7 @@ update = (gcb)->
         url:'http://zh.moegirl.org/api.php?format=json&action=query&list=recentchanges&rcnamespace=0&rctoponly=1'
         method:'GET'
         timeout:10000
-        proxy:'http://127.0.0.1:8888'
+        #proxy:'http://127.0.0.1:8888'
         headers:
             'User-Agent':'Node.js'
     ,esc defer req
@@ -117,7 +117,7 @@ question = (gcb)->
     item = _.find list,(item)->item.hash not in results
     return gcb 'nothing to post' if not item?
 
-    await api.linkPreview encodeURI(item.url),esc defer embed
+    await api.linkPreview item.url,esc defer embed
 
     return gcb new Error "Cannot fetch #{item.url} from Google server." if not embed.succeeded
 
