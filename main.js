@@ -190,7 +190,7 @@
         __iced_deferrals._fulfill();
       })(function() {
         if (rc.length === results.length) {
-          return gcb('nothing to post');
+          return gcb(new Error('nothing to post'));
         }
         results = _.flatten(results.map(function(item) {
           return item.rcid;
@@ -200,7 +200,7 @@
           return _ref = item.rcid, __indexOf.call(results, _ref) < 0;
         });
         if (item == null) {
-          return gcb('nothing to post');
+          return gcb(new Error('nothing to post'));
         }
         item.url = 'http://zh.moegirl.org/' + item.title;
         (function(__iced_k) {
@@ -314,7 +314,7 @@
         __iced_deferrals._fulfill();
       })(function() {
         if (list.length === results.length) {
-          return gcb('nothing to post');
+          return gcb(new Error('nothing to post'));
         }
         results = _.flatten(results.map(function(item) {
           return item.hash;
@@ -324,7 +324,7 @@
           return _ref = item.hash, __indexOf.call(results, _ref) < 0;
         });
         if (item == null) {
-          return gcb('nothing to post');
+          return gcb(new Error('nothing to post'));
         }
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {

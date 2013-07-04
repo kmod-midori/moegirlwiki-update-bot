@@ -75,10 +75,10 @@ update = (gcb)->
 
     await col_e.find({rcid:{'$in':rcids}},{_id:0,rcid:1}).toArray esc defer results
 
-    return gcb 'nothing to post' if rc.length == results.length
+    return gcb new Error 'nothing to post' if rc.length == results.length
     results = _.flatten(results.map((item)->item.rcid))
     item = _.find rc,(item)->item.rcid not in results
-    return gcb 'nothing to post' if not item?
+    return gcb new Error 'nothing to post' if not item?
 
     item.url = 'http://zh.moegirl.org/' + item.title
     await api.linkPreview encodeURI(item.url),esc defer embed
@@ -112,10 +112,10 @@ question = (gcb)->
 
     await col_upd.find({hash:{'$in':hash}},{_id:0,hash:1}).toArray esc defer results
 
-    return gcb 'nothing to post' if list.length == results.length
+    return gcb new Error 'nothing to post' if list.length == results.length
     results = _.flatten(results.map((item)->item.hash))
     item = _.find list,(item)->item.hash not in results
-    return gcb 'nothing to post' if not item?
+    return gcb new Error 'nothing to post' if not item?
 
     await api.linkPreview item.url,esc defer embed
 
