@@ -55,7 +55,7 @@ fetch = (gcb)->
 update = (gcb)->
     esc = make_esc gcb
     await request
-        url:'http://zh.moegirl.org/api.php?format=json&action=query&list=recentchanges&rcnamespace=0&rctoponly=1'
+        url:'http://zh.moegirl.org/api.php?format=json&action=query&list=recentchanges&rcnamespace=0&rctoponly=1&rcprop=flags|title|ids'
         method:'GET'
         timeout:10000
         #proxy:'http://127.0.0.1:8888'
@@ -70,6 +70,8 @@ update = (gcb)->
         rc = JSON.parse(req.body).query.recentchanges
     catch e
         return gcb e
+
+    rc = rc.filter (i)->not i.bot?
     rcids = for item in rc
         item.rcid
 
@@ -84,6 +86,14 @@ update = (gcb)->
     await api.linkPreview encodeURI(item.url),esc defer embed
 
     return gcb new Error "Cannot fetch #{item.url} from Google server." if not embed.succeeded
+
+    if not embed.embedItem[0].webPage.description?
+        await setTimeout defer(),60000*3
+        await api.linkPreview encodeURI(item.url),esc defer embed
+        if not embed.embedItem[0].webPage.description?
+            await col_upd.insert _.extend(item,{error:'linkpreview failed'}),esc defer()
+            return gcb new Error "Cannot fetch #{item.url} from Google server." if not embed.succeeded
+
 
     str = """
           条目： ##{item.title.replace(' ','_')}
@@ -121,6 +131,13 @@ question = (gcb)->
 
     return gcb new Error "Cannot fetch #{item.url} from Google server." if not embed.succeeded
 
+    if not embed.embedItem[0].webPage.description?
+        await setTimeout defer(),60000*3
+        await api.linkPreview item.url,esc defer embed
+        if not embed.embedItem[0].webPage.description?
+            await col_upd.insert _.extend(item,{error:'linkpreview failed'}),esc defer()
+            return gcb new Error "Cannot fetch #{item.url} from Google server." if not embed.succeeded
+
     await api.postPublicActivity item.title,embed.embedItem[0],esc defer activity
 
     await col_upd.insert item,esc defer()
@@ -146,7 +163,7 @@ setInterval ->
                 setTimeout ->
                     update (err,a,rcid)->
                         return require('util').log("[U][ERROR]#{err.message}") if err
-                        require('util').log("[U][POSTED]#{a.stream.update[0].updateId}(#{i.hash})")
+                        require('util').log("[U][POSTED]#{a.stream.update[0].updateId}(#{rcid})")
                 ,300000
                 return require('util').log("[U][ERROR]#{err.message}")
             require('util').log("[U][POSTED]#{a.stream.update[0].updateId}(#{rcid})")

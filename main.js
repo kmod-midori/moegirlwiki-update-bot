@@ -45,7 +45,7 @@
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k, {
         parent: ___iced_passed_deferral,
-        filename: "main.coffee",
+        filename: "D:\moegirlwiki-update-bot\main.coffee",
         funcname: "fetch"
       });
       request({
@@ -84,7 +84,7 @@
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "main.coffee",
+          filename: "D:\moegirlwiki-update-bot\main.coffee",
           funcname: "fetch"
         });
         jsdom.env(html, ['jquery.js'], {}, esc(__iced_deferrals.defer({
@@ -127,11 +127,11 @@
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k, {
         parent: ___iced_passed_deferral,
-        filename: "main.coffee",
+        filename: "D:\moegirlwiki-update-bot\main.coffee",
         funcname: "update"
       });
       request({
-        url: 'http://zh.moegirl.org/api.php?format=json&action=query&list=recentchanges&rcnamespace=0&rctoponly=1',
+        url: 'http://zh.moegirl.org/api.php?format=json&action=query&list=recentchanges&rcnamespace=0&rctoponly=1&rcprop=flags|title|ids',
         method: 'GET',
         timeout: 10000,
         headers: {
@@ -157,6 +157,9 @@
         e = _error;
         return gcb(e);
       }
+      rc = rc.filter(function(i) {
+        return i.bot == null;
+      });
       rcids = (function() {
         var _i, _len, _results;
         _results = [];
@@ -169,7 +172,7 @@
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "main.coffee",
+          filename: "D:\moegirlwiki-update-bot\main.coffee",
           funcname: "update"
         });
         col_e.find({
@@ -185,7 +188,7 @@
               return results = arguments[0];
             };
           })(),
-          lineno: 75
+          lineno: 77
         })));
         __iced_deferrals._fulfill();
       })(function() {
@@ -206,7 +209,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "main.coffee",
+            filename: "D:\moegirlwiki-update-bot\main.coffee",
             funcname: "update"
           });
           api.linkPreview(encodeURI(item.url), esc(__iced_deferrals.defer({
@@ -215,44 +218,104 @@
                 return embed = arguments[0];
               };
             })(),
-            lineno: 83
+            lineno: 85
           })));
           __iced_deferrals._fulfill();
         })(function() {
           if (!embed.succeeded) {
             return gcb(new Error("Cannot fetch " + item.url + " from Google server."));
           }
-          str = "条目： #" + (item.title.replace(' ', '_')) + "\n\n更新了哦！不来看看么？\n传送在此：\n\n→_→ " + (encodeURI(item.url));
           (function(__iced_k) {
-            __iced_deferrals = new iced.Deferrals(__iced_k, {
-              parent: ___iced_passed_deferral,
-              filename: "main.coffee",
-              funcname: "update"
-            });
-            api.postPublicActivity(str, embed.embedItem[0], esc(__iced_deferrals.defer({
-              assign_fn: (function() {
-                return function() {
-                  return activity = arguments[0];
-                };
-              })(),
-              lineno: 96
-            })));
-            __iced_deferrals._fulfill();
+            if (embed.embedItem[0].webPage.description == null) {
+              (function(__iced_k) {
+                __iced_deferrals = new iced.Deferrals(__iced_k, {
+                  parent: ___iced_passed_deferral,
+                  filename: "D:\moegirlwiki-update-bot\main.coffee",
+                  funcname: "update"
+                });
+                setTimeout(__iced_deferrals.defer({
+                  lineno: 90
+                }), 60000 * 3);
+                __iced_deferrals._fulfill();
+              })(function() {
+                (function(__iced_k) {
+                  __iced_deferrals = new iced.Deferrals(__iced_k, {
+                    parent: ___iced_passed_deferral,
+                    filename: "D:\moegirlwiki-update-bot\main.coffee",
+                    funcname: "update"
+                  });
+                  api.linkPreview(encodeURI(item.url), esc(__iced_deferrals.defer({
+                    assign_fn: (function() {
+                      return function() {
+                        return embed = arguments[0];
+                      };
+                    })(),
+                    lineno: 91
+                  })));
+                  __iced_deferrals._fulfill();
+                })(function() {
+                  (function(__iced_k) {
+                    if (embed.embedItem[0].webPage.description == null) {
+                      (function(__iced_k) {
+                        __iced_deferrals = new iced.Deferrals(__iced_k, {
+                          parent: ___iced_passed_deferral,
+                          filename: "D:\moegirlwiki-update-bot\main.coffee",
+                          funcname: "update"
+                        });
+                        col_upd.insert(_.extend(item, {
+                          error: 'linkpreview failed'
+                        }), esc(__iced_deferrals.defer({
+                          lineno: 93
+                        })));
+                        __iced_deferrals._fulfill();
+                      })(function() {
+                        if (!embed.succeeded) {
+                          return gcb(new Error("Cannot fetch " + item.url + " from Google server."));
+                        }
+                        return __iced_k();
+                      });
+                    } else {
+                      return __iced_k();
+                    }
+                  })(__iced_k);
+                });
+              });
+            } else {
+              return __iced_k();
+            }
           })(function() {
+            str = "条目： #" + (item.title.replace(' ', '_')) + "\n\n更新了哦！不来看看么？\n传送在此：\n\n→_→ " + (encodeURI(item.url));
             (function(__iced_k) {
               __iced_deferrals = new iced.Deferrals(__iced_k, {
                 parent: ___iced_passed_deferral,
-                filename: "main.coffee",
+                filename: "D:\moegirlwiki-update-bot\main.coffee",
                 funcname: "update"
               });
-              col_e.insert({
-                rcid: item.rcid
-              }, esc(__iced_deferrals.defer({
-                lineno: 98
+              api.postPublicActivity(str, embed.embedItem[0], esc(__iced_deferrals.defer({
+                assign_fn: (function() {
+                  return function() {
+                    return activity = arguments[0];
+                  };
+                })(),
+                lineno: 106
               })));
               __iced_deferrals._fulfill();
             })(function() {
-              return gcb(null, activity, item.rcid);
+              (function(__iced_k) {
+                __iced_deferrals = new iced.Deferrals(__iced_k, {
+                  parent: ___iced_passed_deferral,
+                  filename: "D:\moegirlwiki-update-bot\main.coffee",
+                  funcname: "update"
+                });
+                col_e.insert({
+                  rcid: item.rcid
+                }, esc(__iced_deferrals.defer({
+                  lineno: 108
+                })));
+                __iced_deferrals._fulfill();
+              })(function() {
+                return gcb(null, activity, item.rcid);
+              });
             });
           });
         });
@@ -269,7 +332,7 @@
     (function(__iced_k) {
       __iced_deferrals = new iced.Deferrals(__iced_k, {
         parent: ___iced_passed_deferral,
-        filename: "main.coffee",
+        filename: "D:\moegirlwiki-update-bot\main.coffee",
         funcname: "question"
       });
       fetch(esc(__iced_deferrals.defer({
@@ -278,7 +341,7 @@
             return list = arguments[0];
           };
         })(),
-        lineno: 104
+        lineno: 114
       })));
       __iced_deferrals._fulfill();
     })(function() {
@@ -293,7 +356,7 @@
       (function(__iced_k) {
         __iced_deferrals = new iced.Deferrals(__iced_k, {
           parent: ___iced_passed_deferral,
-          filename: "main.coffee",
+          filename: "D:\moegirlwiki-update-bot\main.coffee",
           funcname: "question"
         });
         col_upd.find({
@@ -309,7 +372,7 @@
               return results = arguments[0];
             };
           })(),
-          lineno: 112
+          lineno: 122
         })));
         __iced_deferrals._fulfill();
       })(function() {
@@ -329,7 +392,7 @@
         (function(__iced_k) {
           __iced_deferrals = new iced.Deferrals(__iced_k, {
             parent: ___iced_passed_deferral,
-            filename: "main.coffee",
+            filename: "D:\moegirlwiki-update-bot\main.coffee",
             funcname: "question"
           });
           api.linkPreview(item.url, esc(__iced_deferrals.defer({
@@ -338,7 +401,7 @@
                 return embed = arguments[0];
               };
             })(),
-            lineno: 119
+            lineno: 129
           })));
           __iced_deferrals._fulfill();
         })(function() {
@@ -346,33 +409,93 @@
             return gcb(new Error("Cannot fetch " + item.url + " from Google server."));
           }
           (function(__iced_k) {
-            __iced_deferrals = new iced.Deferrals(__iced_k, {
-              parent: ___iced_passed_deferral,
-              filename: "main.coffee",
-              funcname: "question"
-            });
-            api.postPublicActivity(item.title, embed.embedItem[0], esc(__iced_deferrals.defer({
-              assign_fn: (function() {
-                return function() {
-                  return activity = arguments[0];
-                };
-              })(),
-              lineno: 123
-            })));
-            __iced_deferrals._fulfill();
+            if (embed.embedItem[0].webPage.description == null) {
+              (function(__iced_k) {
+                __iced_deferrals = new iced.Deferrals(__iced_k, {
+                  parent: ___iced_passed_deferral,
+                  filename: "D:\moegirlwiki-update-bot\main.coffee",
+                  funcname: "question"
+                });
+                setTimeout(__iced_deferrals.defer({
+                  lineno: 134
+                }), 60000 * 3);
+                __iced_deferrals._fulfill();
+              })(function() {
+                (function(__iced_k) {
+                  __iced_deferrals = new iced.Deferrals(__iced_k, {
+                    parent: ___iced_passed_deferral,
+                    filename: "D:\moegirlwiki-update-bot\main.coffee",
+                    funcname: "question"
+                  });
+                  api.linkPreview(item.url, esc(__iced_deferrals.defer({
+                    assign_fn: (function() {
+                      return function() {
+                        return embed = arguments[0];
+                      };
+                    })(),
+                    lineno: 135
+                  })));
+                  __iced_deferrals._fulfill();
+                })(function() {
+                  (function(__iced_k) {
+                    if (embed.embedItem[0].webPage.description == null) {
+                      (function(__iced_k) {
+                        __iced_deferrals = new iced.Deferrals(__iced_k, {
+                          parent: ___iced_passed_deferral,
+                          filename: "D:\moegirlwiki-update-bot\main.coffee",
+                          funcname: "question"
+                        });
+                        col_upd.insert(_.extend(item, {
+                          error: 'linkpreview failed'
+                        }), esc(__iced_deferrals.defer({
+                          lineno: 137
+                        })));
+                        __iced_deferrals._fulfill();
+                      })(function() {
+                        if (!embed.succeeded) {
+                          return gcb(new Error("Cannot fetch " + item.url + " from Google server."));
+                        }
+                        return __iced_k();
+                      });
+                    } else {
+                      return __iced_k();
+                    }
+                  })(__iced_k);
+                });
+              });
+            } else {
+              return __iced_k();
+            }
           })(function() {
             (function(__iced_k) {
               __iced_deferrals = new iced.Deferrals(__iced_k, {
                 parent: ___iced_passed_deferral,
-                filename: "main.coffee",
+                filename: "D:\moegirlwiki-update-bot\main.coffee",
                 funcname: "question"
               });
-              col_upd.insert(item, esc(__iced_deferrals.defer({
-                lineno: 125
+              api.postPublicActivity(item.title, embed.embedItem[0], esc(__iced_deferrals.defer({
+                assign_fn: (function() {
+                  return function() {
+                    return activity = arguments[0];
+                  };
+                })(),
+                lineno: 140
               })));
               __iced_deferrals._fulfill();
             })(function() {
-              return gcb(null, activity, item);
+              (function(__iced_k) {
+                __iced_deferrals = new iced.Deferrals(__iced_k, {
+                  parent: ___iced_passed_deferral,
+                  filename: "D:\moegirlwiki-update-bot\main.coffee",
+                  funcname: "question"
+                });
+                col_upd.insert(item, esc(__iced_deferrals.defer({
+                  lineno: 142
+                })));
+                __iced_deferrals._fulfill();
+              })(function() {
+                return gcb(null, activity, item);
+              });
             });
           });
         });
@@ -407,7 +530,7 @@
               if (err) {
                 return require('util').log("[U][ERROR]" + err.message);
               }
-              return require('util').log("[U][POSTED]" + a.stream.update[0].updateId + "(" + i.hash + ")");
+              return require('util').log("[U][POSTED]" + a.stream.update[0].updateId + "(" + rcid + ")");
             });
           }, 300000);
           return require('util').log("[U][ERROR]" + err.message);
