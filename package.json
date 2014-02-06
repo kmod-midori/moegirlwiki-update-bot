@@ -1,34 +1,42 @@
 {
-    "name": "moegirlwiki-update-bot",
-    "description": "A iced-coffee-script-powered update robot for moegirl.org on Google+",
-    "version": "1.0.0alpha",
-    "contributors": [
-        {
-            "name": "zh喵",
-            "email": "",
-            "web": "https://plus.google.com/101873829070855379840"
-        }
-    ],
-    "maintainers": [
-        {
-            "name": "Harry Cheng",
-            "email": "chengyuhui1@gmail.com",
-            "web": "https://plus.google.com/100451406650884759770"
-        }
-    ],
-    "dependencies": {
-        "request": "2.21.x",
-        "jsdom": "0.6.x",
-        "iced-error": "0.0.5",
-        "iced-coffee-script": "1.6.x",
-        "crc": "0.2.x",
-        "mongoskin": "0.5.x",
-        "underscore": "1.4.4"
-    },
-    "licenses": [
-        {
-            "name": "MIT License",
-            "url": ""
-        }
-    ]
+  "name": "moegirlwiki-update-bot",
+  "description": "A fiber-powered update robot for moegirl.org on Google+",
+  "version": "1.0.0-5",
+  "contributors": [
+    {
+      "name": "zh99998",
+      "email": "",
+      "web": "https://plus.google.com/101873829070855379840"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Harry Cheng",
+      "email": "chengyuhui1@gmail.com",
+      "web": "https://plus.google.com/100451406650884759770"
+    }
+  ],
+  "dependencies": {
+    "eventemitter3": "0.0.1",
+    "wait.for": "~0.6.3",
+    "request": "~2.30.0",
+    "lodash": "~2.4.1",
+    "pomelo-schedule": "~0.3.7",
+    "tracer": "~0.6.1",
+    "mongoose": "~3.8.3"
+  },
+  "licenses": [
+    {
+      "name": "MIT License",
+      "url": ""
+    }
+  ],
+  "analyze": false,
+  "subdomain": "moegirl-update-gplus",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
 }
